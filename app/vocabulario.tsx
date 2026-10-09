@@ -1,27 +1,61 @@
 import { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-const termos = [
-  { coreano: 'Charyeot', pt: 'Atenção' },
-  { coreano: 'Kyong-rye', pt: 'Cumprimentar' },
-  { coreano: 'Joon-bi', pt: 'Preparar' },
-  { coreano: 'Sijak', pt: 'Começar' },
-  { coreano: 'Baro', pt: 'Voltar' },
-  { coreano: 'Keuman', pt: 'Parar' },
+type Termo = {
+  coreano: string;
+  pt: string;
+};
+
+type BlocoVocabulario = {
+  titulo: string;
+  termos: Termo[];
+};
+
+const blocos: BlocoVocabulario[] = [
+  {
+    titulo: 'Vocabulário básico',
+    termos: [
+      { coreano: 'Charyeot', pt: 'Atenção' },
+      { coreano: 'Kyong-rye', pt: 'Cumprimentar' },
+      { coreano: 'Joon-bi', pt: 'Preparar' },
+      { coreano: 'Sijak', pt: 'Começar' },
+      { coreano: 'Baro', pt: 'Voltar' },
+      { coreano: 'Keuman', pt: 'Parar' },
+    ],
+  },
+  {
+    titulo: 'Contagem',
+    termos: [
+      { coreano: 'Hanná', pt: 'Um' },
+      { coreano: 'Tull', pt: 'Dois' },
+      { coreano: 'Sêt', pt: 'Três' },
+      { coreano: 'Nêt', pt: 'Quatro' },
+      { coreano: 'Dasôt', pt: 'Cinco' },
+      { coreano: 'Iosôt', pt: 'Seis' },
+      { coreano: 'Ilgôb', pt: 'Sete' },
+      { coreano: 'Iodoll', pt: 'Oito' },
+      { coreano: 'Ahop', pt: 'Nove' },
+      { coreano: 'Iol', pt: 'Dez' },
+    ],
+  },
 ];
 
 export default function VocabularioScreen() {
   const [busca, setBusca] = useState('');
 
-  const termosFiltrados = termos.filter((item) => {
-    const termo = busca.trim().toLowerCase();
+  const termo = busca.trim().toLowerCase();
+  const blocosFiltrados = blocos
+    .map((bloco) => ({
+      ...bloco,
+      termos: bloco.termos.filter((item) => {
+        if (!termo) {
+          return true;
+        }
 
-    if (!termo) {
-      return true;
-    }
-
-    return item.coreano.toLowerCase().includes(termo) || item.pt.toLowerCase().includes(termo);
-  });
+        return item.coreano.toLowerCase().includes(termo) || item.pt.toLowerCase().includes(termo);
+      }),
+    }))
+    .filter((bloco) => bloco.termos.length > 0);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -48,22 +82,24 @@ export default function VocabularioScreen() {
           />
         </View>
 
-        <View style={styles.card}>
-          <Text style={styles.cardTitulo}>Vocabulário básico</Text>
+        {blocosFiltrados.map((bloco) => (
+          <View key={bloco.titulo} style={styles.card}>
+            <Text style={styles.cardTitulo}>{bloco.titulo}</Text>
 
-          {termosFiltrados.map((item) => (
-            <View key={item.coreano} style={styles.linha}>
-              <View style={styles.textosLinha}>
+            {bloco.termos.map((item) => (
+              <View key={`${bloco.titulo}-${item.coreano}`} style={styles.linha}>
                 <Text style={styles.coreano}>{item.coreano}</Text>
                 <Text style={styles.portugues}>{item.pt}</Text>
               </View>
-            </View>
-          ))}
+            ))}
+          </View>
+        ))}
 
-          {termosFiltrados.length === 0 && (
+        {blocosFiltrados.length === 0 && (
+          <View style={styles.card}>
             <Text style={styles.semResultados}>Nenhum termo encontrado para essa pesquisa.</Text>
-          )}
-        </View>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -148,14 +184,16 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   linha: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#1E293B',
   },
-  textosLinha: {
-    gap: 4,
-  },
   coreano: {
+    flex: 1,
     color: '#E2E8F0',
     fontSize: 16,
     fontWeight: '800',
@@ -164,6 +202,7 @@ const styles = StyleSheet.create({
     color: '#93C5FD',
     fontSize: 14,
     lineHeight: 20,
+    textAlign: 'right',
   },
   semResultados: {
     color: '#94A3B8',
