@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 type TrainingKey = 'A' | 'B';
 type PlaceKey = 'dojang' | 'academia';
@@ -18,6 +18,7 @@ type WarmupItem = {
   exercicio: string;
   quanto: string;
   comoFazer: string;
+  atencao: string;
 };
 
 const AQUECIMENTO: WarmupItem[] = [
@@ -26,48 +27,56 @@ const AQUECIMENTO: WarmupItem[] = [
     exercicio: 'Polichinelo',
     quanto: '1 minuto',
     comoFazer: 'Abra e feche pernas e bracos no mesmo ritmo. Aterrise leve na ponta dos pes.',
+    atencao: 'Evite bater o calcanhar no chao.',
   },
   {
     id: 2,
     exercicio: 'Corrida no lugar com joelho alto',
     quanto: '2 x 30 seg',
     comoFazer: 'Corra parado elevando os joelhos ate a altura do quadril, com tronco reto.',
+    atencao: 'Nao jogue o corpo para tras durante a corrida.',
   },
   {
     id: 3,
     exercicio: 'Abrir e fechar o portao',
     quanto: '8 cada perna',
     comoFazer: 'Suba o joelho a frente, abra para o lado e depois feche no caminho contrario.',
+    atencao: 'Se precisar, segure em uma parede para manter o equilibrio.',
   },
   {
     id: 4,
     exercicio: 'Agachamento lento',
     quanto: '10 reps',
     comoFazer: 'Desca controlado em 3 segundos e suba mantendo joelhos alinhados aos pes.',
+    atencao: 'Mantenha os calcanhares no chao e os joelhos na linha dos pes.',
   },
   {
     id: 5,
     exercicio: 'Afundo com giro de tronco',
     quanto: '6 cada lado',
     comoFazer: 'Faca um passo a frente, desca e gire o tronco para o lado da perna da frente.',
+    atencao: 'O joelho da frente nao deve ultrapassar muito a ponta do pe.',
   },
   {
     id: 6,
     exercicio: 'Balanco de perna (frente e lado)',
     quanto: '10 cada direcao',
     comoFazer: 'Apoie na parede e balance a perna para frente/tras e depois para o lado.',
+    atencao: 'Comece com amplitude pequena e aumente aos poucos.',
   },
   {
     id: 7,
     exercicio: 'Saltitos na base de luta',
     quanto: '30 seg',
     comoFazer: 'Fique na base e quique leve na ponta dos pes com joelhos levemente dobrados.',
+    atencao: 'Movimento leve e solto, sem rigidez.',
   },
   {
     id: 8,
     exercicio: 'Chutes leves',
     quanto: '10 cada perna',
     comoFazer: 'Aplique ap tchagui e bandal tchagui com 50% de forca e altura media.',
+    atencao: 'E aquecimento: sem forca maxima e sem buscar altura maxima.',
   },
 ];
 
@@ -210,6 +219,10 @@ export default function TreinosScreen() {
   const [treinoSelecionado, setTreinoSelecionado] = useState<TrainingKey>('A');
   const [localSelecionado, setLocalSelecionado] = useState<PlaceKey>('dojang');
   const [concluidos, setConcluidos] = useState<Record<string, boolean>>({});
+  const [aquecimentoConcluidos, setAquecimentoConcluidos] = useState<Record<number, boolean>>({});
+  const [aquecimentoFinalizado, setAquecimentoFinalizado] = useState(false);
+  const [aquecimentoExpandido, setAquecimentoExpandido] = useState(true);
+  const [infoExercicioId, setInfoExercicioId] = useState<number | null>(null);
 
   const treinoAtual = useMemo(
     () => PLANOS[treinoSelecionado][localSelecionado],
@@ -217,12 +230,33 @@ export default function TreinosScreen() {
   );
 
   const totalConcluidos = treinoAtual.filter((item) => concluidos[item.id]).length;
+  const totalAquecimentoConcluidos = AQUECIMENTO.filter((item) => aquecimentoConcluidos[item.id]).length;
+  const aquecimentoPodeFinalizar = totalAquecimentoConcluidos === AQUECIMENTO.length;
+  const exercicioSelecionado = AQUECIMENTO.find((item) => item.id === infoExercicioId) ?? null;
 
   const alternarConcluido = (id: string) => {
     setConcluidos((estadoAnterior) => ({
       ...estadoAnterior,
       [id]: !estadoAnterior[id],
     }));
+  };
+
+  const alternarConcluidoAquecimento = (id: number) => {
+    if (aquecimentoFinalizado) {
+      return;
+    }
+    setAquecimentoConcluidos((estadoAnterior) => ({
+      ...estadoAnterior,
+      [id]: !estadoAnterior[id],
+    }));
+  };
+
+  const concluirAquecimento = () => {
+    if (!aquecimentoPodeFinalizar) {
+      return;
+    }
+    setAquecimentoFinalizado(true);
+    setAquecimentoExpandido(false);
   };
 
   return (
@@ -233,24 +267,77 @@ export default function TreinosScreen() {
         <Text style={styles.subtitulo}>Treino A/B com versao Dojang e Academia</Text>
 
         <View style={styles.cardAquecimento}>
-          <Text style={styles.aquecimentoTitulo}>Aquecimento</Text>
-          <Text style={styles.aquecimentoSubtitulo}>
-            Faca antes de todos os treinos (Treino A e Treino B)
-          </Text>
+          <View style={styles.aquecimentoCabecalhoLinha}>
+            <View style={styles.aquecimentoCabecalhoTextos}>
+              <Text style={styles.aquecimentoTitulo}>Aquecimento</Text>
+              <Text style={styles.aquecimentoSubtitulo}>
+                Faca antes de todos os treinos (Treino A e Treino B)
+              </Text>
+            </View>
+            <Pressable
+              style={styles.botaoExpandir}
+              onPress={() => setAquecimentoExpandido((estadoAnterior) => !estadoAnterior)}
+            >
+              <Text style={styles.botaoExpandirTexto}>{aquecimentoExpandido ? 'Ocultar' : 'Abrir'}</Text>
+            </Pressable>
+          </View>
+
           <Text style={styles.aquecimentoAviso}>
             Importante: este bloco deve ser feito antes de qualquer treino.
           </Text>
+          <Text style={styles.progressoAquecimento}>
+            {totalAquecimentoConcluidos}/{AQUECIMENTO.length} exercicios concluidos
+          </Text>
 
-          {AQUECIMENTO.map((item) => (
-            <View key={item.id} style={styles.aquecimentoItem}>
-              <View style={styles.aquecimentoTopo}>
-                <Text style={styles.aquecimentoNumero}>{item.id}.</Text>
-                <Text style={styles.aquecimentoExercicio}>{item.exercicio}</Text>
-                <Text style={styles.aquecimentoQuanto}>{item.quanto}</Text>
-              </View>
-              <Text style={styles.aquecimentoComo}>{item.comoFazer}</Text>
-            </View>
-          ))}
+          {aquecimentoExpandido && (
+            <>
+              {AQUECIMENTO.map((item) => {
+                const feito = Boolean(aquecimentoConcluidos[item.id]);
+                return (
+                  <View key={item.id} style={styles.aquecimentoItem}>
+                    <View style={styles.aquecimentoTopo}>
+                      <Text style={styles.aquecimentoNumero}>{item.id}.</Text>
+                      <Text style={styles.aquecimentoExercicio}>{item.exercicio}</Text>
+                    </View>
+
+                    <View style={styles.aquecimentoLinhaAcao}>
+                      <Text style={styles.aquecimentoQuanto}>{item.quanto}</Text>
+
+                      <View style={styles.aquecimentoBotoesAcao}>
+                        <Pressable
+                          style={styles.botaoInfo}
+                          onPress={() => setInfoExercicioId(item.id)}
+                        >
+                          <Text style={styles.botaoInfoTexto}>i</Text>
+                        </Pressable>
+
+                        <Pressable
+                          style={[styles.botaoConcluir, feito && styles.botaoConcluirAtivo]}
+                          onPress={() => alternarConcluidoAquecimento(item.id)}
+                        >
+                          <Text style={[styles.botaoConcluirTexto, feito && styles.botaoConcluirTextoAtivo]}>
+                            {feito ? 'Concluido' : 'Concluir'}
+                          </Text>
+                        </Pressable>
+                      </View>
+                    </View>
+                  </View>
+                );
+              })}
+
+              {aquecimentoPodeFinalizar && !aquecimentoFinalizado && (
+                <Pressable style={styles.botaoFinalizarAquecimento} onPress={concluirAquecimento}>
+                  <Text style={styles.botaoFinalizarAquecimentoTexto}>Concluir aquecimento</Text>
+                </Pressable>
+              )}
+            </>
+          )}
+
+          {aquecimentoFinalizado && (
+            <Text style={styles.aquecimentoFinalizadoTexto}>
+              Aquecimento finalizado. Card recolhido para seguir no treino.
+            </Text>
+          )}
         </View>
 
         <View style={styles.grupoBotoes}>
@@ -333,6 +420,25 @@ export default function TreinosScreen() {
           );
         })}
       </ScrollView>
+
+      <Modal visible={infoExercicioId !== null} transparent animationType="fade" onRequestClose={() => setInfoExercicioId(null)}>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitulo}>{exercicioSelecionado?.exercicio}</Text>
+            <Text style={styles.modalSubtitulo}>Quantidade: {exercicioSelecionado?.quanto}</Text>
+
+            <Text style={styles.modalRotulo}>Como fazer</Text>
+            <Text style={styles.modalTexto}>{exercicioSelecionado?.comoFazer}</Text>
+
+            <Text style={styles.modalRotulo}>Atencao</Text>
+            <Text style={styles.modalTexto}>{exercicioSelecionado?.atencao}</Text>
+
+            <Pressable style={styles.botaoFecharModal} onPress={() => setInfoExercicioId(null)}>
+              <Text style={styles.botaoFecharModalTexto}>Fechar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -378,6 +484,16 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 8,
   },
+  aquecimentoCabecalhoLinha: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  aquecimentoCabecalhoTextos: {
+    flex: 1,
+    gap: 4,
+  },
   aquecimentoTitulo: {
     color: '#E0F2FE',
     fontSize: 20,
@@ -393,6 +509,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     marginBottom: 2,
+  },
+  progressoAquecimento: {
+    color: '#93C5FD',
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  botaoExpandir: {
+    backgroundColor: '#1E3A8A',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+  },
+  botaoExpandirTexto: {
+    color: '#DBEAFE',
+    fontSize: 12,
+    fontWeight: '700',
   },
   aquecimentoItem: {
     borderTopWidth: 1,
@@ -416,15 +549,123 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
   },
+  aquecimentoLinhaAcao: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
   aquecimentoQuanto: {
     color: '#38BDF8',
     fontSize: 12,
     fontWeight: '800',
   },
-  aquecimentoComo: {
+  aquecimentoBotoesAcao: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  botaoInfo: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#38BDF8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0C4A6E',
+  },
+  botaoInfoTexto: {
+    color: '#E0F2FE',
+    fontWeight: '800',
+    fontSize: 14,
+  },
+  botaoConcluir: {
+    borderWidth: 1,
+    borderColor: '#334155',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    backgroundColor: '#0F172A',
+  },
+  botaoConcluirAtivo: {
+    borderColor: '#22C55E',
+    backgroundColor: '#14532D',
+  },
+  botaoConcluirTexto: {
     color: '#CBD5E1',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  botaoConcluirTextoAtivo: {
+    color: '#DCFCE7',
+  },
+  botaoFinalizarAquecimento: {
+    marginTop: 8,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    backgroundColor: '#0284C7',
+  },
+  botaoFinalizarAquecimentoTexto: {
+    color: '#F8FAFC',
+    fontSize: 14,
+    fontWeight: '800',
+  },
+  aquecimentoFinalizadoTexto: {
+    marginTop: 8,
+    color: '#BBF7D0',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(2, 6, 23, 0.75)',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  modalCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#1E293B',
+    backgroundColor: '#0F172A',
+    padding: 16,
+    gap: 8,
+  },
+  modalTitulo: {
+    color: '#F8FAFC',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  modalSubtitulo: {
+    color: '#93C5FD',
     fontSize: 13,
-    lineHeight: 18,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  modalRotulo: {
+    color: '#E2E8F0',
+    fontSize: 13,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  modalTexto: {
+    color: '#CBD5E1',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  botaoFecharModal: {
+    marginTop: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    paddingVertical: 11,
+    backgroundColor: '#1E293B',
+  },
+  botaoFecharModalTexto: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '700',
   },
   grupoBotoes: {
     marginTop: 8,
