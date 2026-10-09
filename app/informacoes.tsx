@@ -1,4 +1,57 @@
-import { ScrollView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, Pressable, ScrollView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+
+type LinkExercicio = {
+  treino: string;
+  exercicio: string;
+  url: string;
+};
+
+const LINKS_EXERCICIOS: LinkExercicio[] = [
+  { treino: 'Aquecimento', exercicio: 'Polichinelo', url: 'https://www.youtube.com/results?search_query=Polichinelo+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Corrida no lugar com joelho alto', url: 'https://www.youtube.com/results?search_query=Corrida+no+lugar+com+joelho+alto+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Abrir e fechar o portão', url: 'https://www.youtube.com/results?search_query=abrir+e+fechar+o+portao+mobilidade+quadril+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Agachamento lento', url: 'https://www.youtube.com/results?search_query=Agachamento+lento+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Afundo com giro de tronco', url: 'https://www.youtube.com/results?search_query=Afundo+com+giro+de+tronco+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Balanço de perna (frente e lado)', url: 'https://www.youtube.com/results?search_query=Balanco+de+perna+%28frente+e+lado%29+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Saltitos na base de luta', url: 'https://www.youtube.com/results?search_query=base+de+luta+taekwondo+saltito+tecnica+execucao' },
+  { treino: 'Aquecimento', exercicio: 'Chutes leves', url: 'https://www.youtube.com/results?search_query=ap+tchagui+bandal+tchagui+tecnica+execucao' },
+
+  { treino: 'A - Dojang', exercicio: 'Salto vertical', url: 'https://www.youtube.com/results?search_query=Salto+vertical+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Agachamento livre', url: 'https://www.youtube.com/results?search_query=Agachamento+livre+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Afundo alternado (passada)', url: 'https://www.youtube.com/results?search_query=Afundo+alternado+%28passada%29+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Ponte de glúteo', url: 'https://www.youtube.com/results?search_query=Ponte+de+gluteo+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Equilíbrio na câmara do chute', url: 'https://www.youtube.com/results?search_query=camara+do+chute+taekwondo+equilibrio+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Panturrilha em uma perna', url: 'https://www.youtube.com/results?search_query=Panturrilha+em+uma+perna+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Prancha frontal', url: 'https://www.youtube.com/results?search_query=Prancha+frontal+tecnica+execucao' },
+  { treino: 'A - Dojang', exercicio: 'Inseto morto', url: 'https://www.youtube.com/results?search_query=dead+bug+inseto+morto+exercicio+tecnica+execucao' },
+
+  { treino: 'A - Academia', exercicio: 'Salto vertical', url: 'https://www.youtube.com/results?search_query=Salto+vertical+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Agachamento com halter (goblet)', url: 'https://www.youtube.com/results?search_query=agachamento+goblet+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Stiff com halteres', url: 'https://www.youtube.com/results?search_query=Stiff+com+halteres+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Agachamento búlgaro', url: 'https://www.youtube.com/results?search_query=Agachamento+bulgaro+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Elevação de quadril no banco', url: 'https://www.youtube.com/results?search_query=Elevacao+de+quadril+no+banco+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Panturrilha em pé', url: 'https://www.youtube.com/results?search_query=Panturrilha+em+pe+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Prancha frontal', url: 'https://www.youtube.com/results?search_query=Prancha+frontal+tecnica+execucao' },
+  { treino: 'A - Academia', exercicio: 'Pallof (antirrotação no cabo)', url: 'https://www.youtube.com/results?search_query=pallof+press+tecnica+execucao' },
+
+  { treino: 'B - Dojang', exercicio: 'Deslocamento lateral na base', url: 'https://www.youtube.com/results?search_query=deslocamento+lateral+taekwondo+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Salto do patinador', url: 'https://www.youtube.com/results?search_query=Salto+do+patinador+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Flexão de braço', url: 'https://www.youtube.com/results?search_query=Flexao+de+braco+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Super-homem com Y', url: 'https://www.youtube.com/results?search_query=superman+Y+exercicio+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Prancha lateral', url: 'https://www.youtube.com/results?search_query=Prancha+lateral+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Escalador', url: 'https://www.youtube.com/results?search_query=Escalador+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Abdominal bicicleta', url: 'https://www.youtube.com/results?search_query=Abdominal+bicicleta+tecnica+execucao' },
+  { treino: 'B - Dojang', exercicio: 'Rounds de chute (final)', url: 'https://www.youtube.com/results?search_query=bandal+tchagui+alternado+rapido+tecnica+execucao' },
+
+  { treino: 'B - Academia', exercicio: 'Deslocamento lateral na base', url: 'https://www.youtube.com/results?search_query=deslocamento+lateral+taekwondo+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Salto do patinador', url: 'https://www.youtube.com/results?search_query=Salto+do+patinador+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Supino com halteres', url: 'https://www.youtube.com/results?search_query=Supino+com+halteres+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Remada unilateral com halter (serrote)', url: 'https://www.youtube.com/results?search_query=Remada+unilateral+com+halter+%28serrote%29+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Puxada na frente (pulley)', url: 'https://www.youtube.com/results?search_query=Puxada+na+frente+%28pulley%29+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Prancha lateral', url: 'https://www.youtube.com/results?search_query=Prancha+lateral+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Abdominal no cabo ajoelhado', url: 'https://www.youtube.com/results?search_query=Abdominal+no+cabo+ajoelhado+tecnica+execucao' },
+  { treino: 'B - Academia', exercicio: 'Bike intervalada (final)', url: 'https://www.youtube.com/results?search_query=bike+ergometrica+intervalada+HIIT+tecnica+execucao' },
+];
 
 const comoFunciona = [
   {
@@ -45,6 +98,14 @@ const regras = [
 ];
 
 export default function InformacoesScreen() {
+  const abrirYoutube = async (url: string) => {
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('Não foi possível abrir o link', 'Tente copiar e abrir no navegador.');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -96,6 +157,24 @@ export default function InformacoesScreen() {
           <Text style={styles.cardTitulo}>Regras de segurança</Text>
           {regras.map((item) => (
             <Text key={item} style={styles.listItem}>• {item}</Text>
+          ))}
+        </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardTitulo}>Se tiver alguma dúvida durante o treino, é só ver o link correspondente ao exercício.</Text>
+          <Text style={styles.cardHint}>Toque em Abrir no YouTube para ir direto ao link do exercício.</Text>
+
+          {LINKS_EXERCICIOS.map((item, index) => (
+            <View key={`${item.treino}-${item.exercicio}-${index}`} style={styles.linkRow}>
+              <View style={styles.linkInfo}>
+                <Text style={styles.linkTreino}>{item.treino}</Text>
+                <Text style={styles.linkExercicio}>{item.exercicio}</Text>
+              </View>
+
+              <Pressable style={styles.linkButton} onPress={() => abrirYoutube(item.url)}>
+                <Text style={styles.linkButtonText}>Abrir no YouTube</Text>
+              </Pressable>
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -195,6 +274,43 @@ const styles = StyleSheet.create({
     color: '#CBD5E1',
     fontSize: 14,
     lineHeight: 20,
+  },
+  cardHint: {
+    color: '#94A3B8',
+    fontSize: 12,
+    marginBottom: 4,
+  },
+  linkRow: {
+    borderTopWidth: 1,
+    borderTopColor: '#1E293B',
+    paddingTop: 8,
+    gap: 8,
+  },
+  linkInfo: {
+    gap: 2,
+  },
+  linkTreino: {
+    color: '#93C5FD',
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+  },
+  linkExercicio: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  linkButton: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#1D4ED8',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+  },
+  linkButtonText: {
+    color: '#F8FAFC',
+    fontSize: 12,
+    fontWeight: '700',
   },
   escalaRow: {
     flexDirection: 'row',
