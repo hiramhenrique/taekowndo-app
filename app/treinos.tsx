@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert } from 'react-native';
+import { addTrainingRecord, formatDuration } from './state/trainingRecordsStore';
 
 type TrainingKey = 'A' | 'B';
 type PlaceKey = 'dojang' | 'academia';
@@ -576,6 +578,7 @@ const TREINOS: Record<TrainingKey, Partial<Record<PlaceKey, TrainingExercise[]>>
 };
 
 export default function TreinosScreen() {
+  const scrollRef = useRef<ScrollView>(null);
   const [treinoSelecionado, setTreinoSelecionado] = useState<TrainingKey>('A');
   const [localSelecionado, setLocalSelecionado] = useState<PlaceKey>('dojang');
   const [aquecimentoConcluidos, setAquecimentoConcluidos] = useState<Record<number, boolean>>({});
@@ -584,7 +587,9 @@ export default function TreinosScreen() {
   const [infoExercicioId, setInfoExercicioId] = useState<number | null>(null);
   const [treinoConcluidos, setTreinoConcluidos] = useState<Record<string, boolean>>({});
   const [treinoInfoId, setTreinoInfoId] = useState<string | null>(null);
-  const [treinoFinalizadoPorChave, setTreinoFinalizadoPorChave] = useState<Record<string, boolean>>({});
+  const [treinoIniciado, setTreinoIniciado] = useState(false);
+  const [inicioTreinoEm, setInicioTreinoEm] = useState<number | null>(null);
+  const [tempoTreinoSegundos, setTempoTreinoSegundos] = useState(0);
 
   const totalAquecimentoConcluidos = AQUECIMENTO.filter((item) => aquecimentoConcluidos[item.id]).length;
   const aquecimentoPodeFinalizar = totalAquecimentoConcluidos === AQUECIMENTO.length;
@@ -597,7 +602,33 @@ export default function TreinosScreen() {
     ? treinoAtual.filter((item) => treinoConcluidos[item.id]).length
     : 0;
   const treinoPodeFinalizar = Boolean(treinoAtual && totalTreinoConcluido === treinoAtual.length);
-  const treinoJaFinalizado = Boolean(treinoFinalizadoPorChave[chaveTreinoAtual]);
+
+  useEffect(() => {
+    if (!treinoIniciado || inicioTreinoEm === null) {
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      setTempoTreinoSegundos(Math.floor((Date.now() - inicioTreinoEm) / 1000));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [treinoIniciado, inicioTreinoEm]);
+
+  const resetarTelaParaInicio = () => {
+    setTreinoSelecionado('A');
+    setLocalSelecionado('dojang');
+    setAquecimentoConcluidos({});
+    setAquecimentoFinalizado(false);
+    setAquecimentoExpandido(true);
+    setInfoExercicioId(null);
+    setTreinoConcluidos({});
+    setTreinoInfoId(null);
+    setTreinoIniciado(false);
+    setInicioTreinoEm(null);
+    setTempoTreinoSegundos(0);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  };
 
   const alternarConcluidoAquecimento = (id: number) => {
     if (aquecimentoFinalizado) {
@@ -618,7 +649,7 @@ export default function TreinosScreen() {
   };
 
   const alternarConcluidoTreino = (id: string) => {
-    if (treinoJaFinalizado) {
+    if (!treinoIniciado) {
       return;
     }
     setTreinoConcluidos((estadoAnterior) => ({
@@ -627,20 +658,48 @@ export default function TreinosScreen() {
     }));
   };
 
-  const finalizarTreinoSelecionado = () => {
-    if (!treinoPodeFinalizar) {
+  const iniciarTreinoSelecionado = () => {
+    if (!treinoAtual || treinoIniciado) {
       return;
     }
-    setTreinoFinalizadoPorChave((estadoAnterior) => ({
-      ...estadoAnterior,
-      [chaveTreinoAtual]: true,
-    }));
+
+    setTreinoConcluidos({});
+    setTreinoInfoId(null);
+    setTreinoIniciado(true);
+    setInicioTreinoEm(Date.now());
+    setTempoTreinoSegundos(0);
+  };
+
+  const finalizarTreinoSelecionado = () => {
+    if (!treinoPodeFinalizar || !treinoAtual || !treinoIniciado) {
+      return;
+    }
+
+    const nomeLocal = localSelecionado === 'dojang' ? 'Dojang' : 'Academia';
+    const variacao = `Treino ${treinoSelecionado} - ${nomeLocal}`;
+
+    addTrainingRecord({
+      variation: variacao,
+      durationSeconds: tempoTreinoSegundos,
+      date: new Date(),
+    });
+
+    Alert.alert(
+      'Parabens',
+      'Voce concluiu o treino. Continue se esforcando.',
+      [
+        {
+          text: 'OK',
+          onPress: resetarTelaParaInicio,
+        },
+      ]
+    );
   };
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.bgTop} />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView ref={scrollRef} contentContainerStyle={styles.scrollContent}>
         <Text style={styles.titulo}>Treinos</Text>
         <Text style={styles.subtitulo}>Treino A/B com versão Dojang e Academia</Text>
 
@@ -794,9 +853,18 @@ export default function TreinosScreen() {
                   <Text style={styles.cardTreinoDetalhadoSubtitulo}>
                     Faça os exercícios na ordem da lista e conclua cada bloco.
                   </Text>
+                  <Text style={styles.cronometroLabel}>
+                    Cronometro: {formatDuration(tempoTreinoSegundos)}
+                  </Text>
                   <Text style={styles.cardTreinoDetalhadoProgresso}>
                     {totalTreinoConcluido}/{treinoAtual.length} exercícios concluídos
                   </Text>
+
+                  {!treinoIniciado && (
+                    <Pressable style={styles.botaoIniciarTreino} onPress={iniciarTreinoSelecionado}>
+                      <Text style={styles.botaoIniciarTreinoTexto}>Iniciar treino selecionado</Text>
+                    </Pressable>
+                  )}
 
                   {treinoAtual.map((item, indice) => {
                     const feito = Boolean(treinoConcluidos[item.id]);
@@ -830,16 +898,10 @@ export default function TreinosScreen() {
                     );
                   })}
 
-                  {treinoPodeFinalizar && !treinoJaFinalizado && (
+                  {treinoPodeFinalizar && treinoIniciado && (
                     <Pressable style={styles.botaoFinalizarAquecimento} onPress={finalizarTreinoSelecionado}>
                       <Text style={styles.botaoFinalizarAquecimentoTexto}>Concluir treino selecionado</Text>
                     </Pressable>
-                  )}
-
-                  {treinoJaFinalizado && (
-                    <Text style={styles.treinoFinalizadoTexto}>
-                      Treino selecionado concluído com sucesso.
-                    </Text>
                   )}
                 </View>
               )}
@@ -1136,10 +1198,27 @@ const styles = StyleSheet.create({
     color: '#BFDBFE',
     fontSize: 12,
   },
+  cronometroLabel: {
+    color: '#FCD34D',
+    fontSize: 13,
+    fontWeight: '700',
+  },
   cardTreinoDetalhadoProgresso: {
     color: '#38BDF8',
     fontSize: 12,
     fontWeight: '700',
+  },
+  botaoIniciarTreino: {
+    marginTop: 4,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    backgroundColor: '#0E7490',
+  },
+  botaoIniciarTreinoTexto: {
+    color: '#F0FDFF',
+    fontSize: 14,
+    fontWeight: '800',
   },
   itemTreino: {
     borderTopWidth: 1,
@@ -1181,12 +1260,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 8,
-  },
-  treinoFinalizadoTexto: {
-    marginTop: 6,
-    color: '#BBF7D0',
-    fontSize: 12,
-    fontWeight: '700',
   },
   cardTreinoIndisponivel: {
     borderRadius: 12,
