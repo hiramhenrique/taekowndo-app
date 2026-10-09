@@ -53,13 +53,13 @@ export default function InformacoesScreen() {
         <Text style={styles.subtitulo}>Guia rápido e visual para usar o treino físico de forma simples e segura.</Text>
 
         <View style={styles.headerCard}>
-          <Text style={styles.headerCardTitle}>Plano da semana</Text>
+          <Text style={styles.headerCardTitle}>Plano e treino</Text>
           <View style={styles.badgeRow}>
             <Text style={styles.badge}>Treino A</Text>
             <Text style={styles.badge}>Treino B</Text>
             <Text style={styles.badge}>8 semanas</Text>
           </View>
-          <Text style={styles.headerCardText}>Dojang e Academia têm o mesmo objetivo: evoluir técnica e preparo físico.</Text>
+          <Text style={styles.headerCardText}>Dojang e Academia têm o mesmo objetivo: evoluir técnica e preparo físico. Ao salvar o treino, você poderá acompanhar sua progressão física dentro do taekwondo.</Text>
         </View>
 
         <View style={styles.card}>
