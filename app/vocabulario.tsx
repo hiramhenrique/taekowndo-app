@@ -13,6 +13,21 @@ type BlocoVocabulario = {
 
 const blocos: BlocoVocabulario[] = [
   {
+    titulo: 'Insa (Cumprimento)',
+    termos: [
+      { coreano: 'Kiugné', pt: 'Saudação' },
+      { coreano: 'Kuki e Derraio Kiugné', pt: 'Saudação as Bandeiras' },
+      { coreano: 'Do-Djan Kiunhe', pt: 'Saudação a Sala de Aula' },
+      { coreano: 'Kwan Ja Nim Kiugné', pt: 'Saudação ao Grão Mestre' },
+      { coreano: 'Sa Bo Nim Kiugné', pt: 'Saudação ao Mestre' },
+      { coreano: 'Kio Sa Nim Kiugné', pt: 'Saudação ao Instrutor' },
+      { coreano: 'Jo Kio Nim Kiugné', pt: 'Saudação ao Assistente' },
+      { coreano: 'Anhión Rasseio', pt: 'Tudo bem' },
+      { coreano: 'Gansa Ram Nida', pt: 'Obrigado' },
+      { coreano: 'Nê ou Ié', pt: 'Sim' },
+    ],
+  },
+  {
     titulo: 'Contagem',
     termos: [
       { coreano: 'Hanná', pt: 'Um' },
@@ -47,21 +62,6 @@ const blocos: BlocoVocabulario[] = [
       { coreano: 'Jumbi', pt: 'Preparar' },
       { coreano: 'Barô', pt: 'voltar, parar' },
       { coreano: 'Kesok', pt: 'continuar' },
-    ],
-  },
-  {
-    titulo: 'Insa (Cumprimento)',
-    termos: [
-      { coreano: 'Kiugné', pt: 'Saudação' },
-      { coreano: 'Kuki e Derraio Kiugné', pt: 'Saudação as Bandeiras' },
-      { coreano: 'Do-Djan Kiunhe', pt: 'Saudação a Sala de Aula' },
-      { coreano: 'Kwan Ja Nim Kiugné', pt: 'Saudação ao Grão Mestre' },
-      { coreano: 'Sa Bo Nim Kiugné', pt: 'Saudação ao Mestre' },
-      { coreano: 'Kio Sa Nim Kiugné', pt: 'Saudação ao Instrutor' },
-      { coreano: 'Jo Kio Nim Kiugné', pt: 'Saudação ao Assistente' },
-      { coreano: 'Anhión Rasseio', pt: 'Tudo bem' },
-      { coreano: 'Gansa Ram Nida', pt: 'Obrigado' },
-      { coreano: 'Nê ou Ié', pt: 'Sim' },
     ],
   },
 ];
@@ -205,9 +205,19 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   cardTitulo: {
-    color: '#E2E8F0',
-    fontSize: 17,
-    fontWeight: '800',
+    alignSelf: 'flex-start',
+    color: '#E0F2FE',
+    backgroundColor: '#0C4A6E',
+    borderWidth: 1,
+    borderColor: '#38BDF8',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontSize: 13,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+    letterSpacing: 0.9,
+    elevation: 1,
   },
   linha: {
     flexDirection: 'row',
