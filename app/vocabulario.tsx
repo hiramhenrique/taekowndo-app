@@ -64,6 +64,23 @@ const blocos: BlocoVocabulario[] = [
       { coreano: 'Kesok', pt: 'continuar' },
     ],
   },
+  {
+    titulo: 'Bang Hyang (Direções) e Nopi (Altura)',
+    termos: [
+      { coreano: 'Orun', pt: 'Lado Direito' },
+      { coreano: 'Uen', pt: 'Lado Esquerdo' },
+      { coreano: 'Olgul', pt: 'Rosto' },
+      { coreano: 'Monton', pt: 'Tronco' },
+      { coreano: 'Arê', pt: 'Baixo' },
+      { coreano: 'Yop', pt: 'Lado' },
+      { coreano: 'Dui', pt: 'Atrás' },
+      { coreano: 'Ap', pt: 'Frente' },
+      { coreano: 'Pakat', pt: 'Fora' },
+      { coreano: 'An', pt: 'Dentro' },
+      { coreano: 'Pitrô', pt: 'Diagonal p/ Fora' },
+      { coreano: 'Aproka', pt: 'Deslocar-se p/ frente' },
+    ],
+  },
 ];
 
 export default function VocabularioScreen() {
