@@ -446,6 +446,124 @@ const TREINO_B_DOJANG: TrainingExercise[] = [
   },
 ];
 
+const TREINO_B_ACADEMIA: TrainingExercise[] = [
+  {
+    id: 'b-academia-1',
+    exercicio: 'Deslocamento lateral na base',
+    seriesReps: '4 x 15 seg',
+    descanso: '45 seg',
+    comoFazer: [
+      'Na base de luta, guarda alta.',
+      'Desloque-se rápido para um lado por uns 3 metros e volte, sem cruzar os pés.',
+    ],
+    cuidadoErroComum: 'Cruzar os pés ou pernas esticadas.',
+    paraQueServe: 'Movimentação rápida na área de luta.',
+    achouDificil: 'Mais devagar.',
+  },
+  {
+    id: 'b-academia-2',
+    exercicio: 'Salto do patinador',
+    seriesReps: '3 x 8 cada lado',
+    descanso: '1 min',
+    comoFazer: [
+      'Em pé numa perna.',
+      'Salte de lado e aterrisse na outra.',
+      'Segure 1 seg e volte.',
+    ],
+    cuidadoErroComum: 'Joelho caindo pra dentro.',
+    paraQueServe: 'Explosão lateral e controle numa perna.',
+    achouDificil: 'Passo lateral grande em vez de salto.',
+  },
+  {
+    id: 'b-academia-3',
+    exercicio: 'Supino com halteres',
+    seriesReps: '3 x 10',
+    descanso: '1min30',
+    comoFazer: [
+      'Deitado no banco, um halter em cada mão na altura do peito.',
+      'Pés firmes no chão.',
+      'Empurre os halteres pra cima até esticar os braços.',
+      'Desça devagar até a altura do peito.',
+    ],
+    cuidadoErroComum: 'Cotovelos muito abertos. Bater um halter no outro lá em cima.',
+    paraQueServe: 'Força de empurrar: guarda firme e afastar o oponente.',
+    achouDificil: 'Halteres mais leves ou flexão de braço.',
+  },
+  {
+    id: 'b-academia-4',
+    exercicio: 'Remada unilateral com halter (serrote)',
+    seriesReps: '3 x 10 cada lado',
+    descanso: '1 min',
+    comoFazer: [
+      'Joelho e mão do mesmo lado apoiados no banco, costas retas.',
+      'Halter na outra mão, braço esticado.',
+      'Puxe o halter em direção ao quadril, cotovelo rente ao corpo.',
+      'Desça devagar.',
+    ],
+    cuidadoErroComum: 'Girar o tronco pra levantar o peso. Costas arredondadas.',
+    paraQueServe: 'Costas fortes: postura, equilíbrio entre frente e trás do ombro.',
+    achouDificil: 'Halter mais leve.',
+  },
+  {
+    id: 'b-academia-5',
+    exercicio: 'Puxada na frente (pulley)',
+    seriesReps: '3 x 10',
+    descanso: '1min30',
+    comoFazer: [
+      'Sentado na máquina, coxas presas, segure a barra um pouco mais aberta que os ombros.',
+      'Peito pra cima.',
+      'Puxe a barra até a altura do queixo/peito, levando os cotovelos pra baixo.',
+      'Suba controlando.',
+    ],
+    cuidadoErroComum: 'Jogar o corpo pra trás pra puxar. Puxar atrás da cabeça.',
+    paraQueServe: 'Costas e braços: segurar e controlar no clinch.',
+    achouDificil: 'Menos peso.',
+  },
+  {
+    id: 'b-academia-6',
+    exercicio: 'Prancha lateral',
+    seriesReps: '3 x 30 seg cada lado',
+    descanso: '45 seg',
+    comoFazer: [
+      'De lado, antebraço apoiado (cotovelo embaixo do ombro).',
+      'Quadril pra cima, corpo reto.',
+      'Segure respirando.',
+    ],
+    cuidadoErroComum: 'Quadril caindo.',
+    paraQueServe: 'Força no chute circular e no giro.',
+    achouDificil: 'Joelhos apoiados.',
+  },
+  {
+    id: 'b-academia-7',
+    exercicio: 'Abdominal no cabo ajoelhado',
+    seriesReps: '3 x 12',
+    descanso: '45 seg',
+    comoFazer: [
+      'Ajoelhado de frente pra polia alta, segure a corda perto da testa.',
+      'Enrole o tronco pra baixo, levando os cotovelos em direção às coxas.',
+      'Volte devagar.',
+    ],
+    cuidadoErroComum: 'Sentar nos calcanhares (usar o quadril). O movimento é só do abdômen.',
+    paraQueServe: 'Abdômen forte pra subir a perna no chute e aguentar golpes.',
+    achouDificil: 'Abdominal comum no chão.',
+  },
+  {
+    id: 'b-academia-8',
+    exercicio: 'Bike intervalada (final)',
+    seriesReps: '6 a 8 rounds de 20 seg',
+    descanso: '40 seg pedalando leve',
+    comoFazer: [
+      'Na bicicleta ergométrica, pedale 3 min leve pra aquecer.',
+      '20 seg: pedale o mais rápido que conseguir.',
+      '40 seg: pedale bem leve.',
+      'Repita. (Se a academia tiver saco de pancada, pode fazer os rounds de chute no lugar.)',
+    ],
+    cuidadoErroComum: 'Começar forte demais e não aguentar os últimos rounds. Mantenha o mesmo ritmo em todos.',
+    paraQueServe: 'Condicionamento parecido com o da luta: esforço forte + recuperação.',
+    achouDificil: 'Comece com 4 rounds e aumente 1 por semana.',
+  },
+];
+
 const TREINOS: Record<TrainingKey, Partial<Record<PlaceKey, TrainingExercise[]>>> = {
   A: {
     dojang: TREINO_A_DOJANG,
@@ -453,6 +571,7 @@ const TREINOS: Record<TrainingKey, Partial<Record<PlaceKey, TrainingExercise[]>>
   },
   B: {
     dojang: TREINO_B_DOJANG,
+    academia: TREINO_B_ACADEMIA,
   },
 };
 
