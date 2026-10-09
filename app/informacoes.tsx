@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Alert, Linking, Pressable, ScrollView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 type LinkExercicio = {
@@ -98,6 +99,8 @@ const regras = [
 ];
 
 export default function InformacoesScreen() {
+  const [linksExpandido, setLinksExpandido] = useState(false);
+
   const abrirYoutube = async (url: string) => {
     try {
       await Linking.openURL(url);
@@ -161,21 +164,31 @@ export default function InformacoesScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitulo}>Se tiver alguma dúvida durante o treino, é só ver o link correspondente ao exercício.</Text>
-          <Text style={styles.cardHint}>Toque em Abrir no YouTube para ir direto ao link do exercício.</Text>
+          <Pressable style={styles.linksHeader} onPress={() => setLinksExpandido((estado) => !estado)}>
+            <Text style={styles.cardTitulo}>Se tiver alguma dúvida durante o treino, é só ver o link correspondente ao exercício.</Text>
+            <Text style={styles.linksSeta}>{linksExpandido ? '▲' : '▼'}</Text>
+          </Pressable>
 
-          {LINKS_EXERCICIOS.map((item, index) => (
-            <View key={`${item.treino}-${item.exercicio}-${index}`} style={styles.linkRow}>
-              <View style={styles.linkInfo}>
-                <Text style={styles.linkTreino}>{item.treino}</Text>
-                <Text style={styles.linkExercicio}>{item.exercicio}</Text>
-              </View>
+          {linksExpandido && (
+            <>
+              <Text style={styles.cardHint}>Toque no botão YouTube para abrir direto o link do exercício.</Text>
 
-              <Pressable style={styles.linkButton} onPress={() => abrirYoutube(item.url)}>
-                <Text style={styles.linkButtonText}>Abrir no YouTube</Text>
-              </Pressable>
-            </View>
-          ))}
+              {LINKS_EXERCICIOS.map((item, index) => (
+                <View key={`${item.treino}-${item.exercicio}-${index}`} style={styles.linkRow}>
+                  <View style={styles.linkRowTopo}>
+                    <View style={styles.linkInfo}>
+                      <Text style={styles.linkTreino}>{item.treino}</Text>
+                      <Text style={styles.linkExercicio}>{item.exercicio}</Text>
+                    </View>
+
+                    <Pressable style={styles.linkButton} onPress={() => abrirYoutube(item.url)}>
+                      <Text style={styles.linkButtonText}>▶ YouTube</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              ))}
+            </>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -280,13 +293,31 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 4,
   },
+  linksHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  linksSeta: {
+    color: '#93C5FD',
+    fontSize: 12,
+    fontWeight: '800',
+  },
   linkRow: {
     borderTopWidth: 1,
     borderTopColor: '#1E293B',
     paddingTop: 8,
     gap: 8,
   },
+  linkRowTopo: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
   linkInfo: {
+    flex: 1,
     gap: 2,
   },
   linkTreino: {
@@ -302,7 +333,7 @@ const styles = StyleSheet.create({
   },
   linkButton: {
     alignSelf: 'flex-start',
-    backgroundColor: '#1D4ED8',
+    backgroundColor: '#DC2626',
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 7,
