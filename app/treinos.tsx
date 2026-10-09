@@ -712,7 +712,7 @@ export default function TreinosScreen() {
 
         {treinoIniciado && (
           <View style={styles.cardCronometroTopo}>
-            <Text style={styles.cardCronometroTitulo}>Tempo de combate</Text>
+            <Text style={styles.cardCronometroTitulo}>Tempo de treino</Text>
             <Text style={styles.cardCronometroValor}>{formatDuration(tempoTreinoSegundos)}</Text>
           </View>
         )}
@@ -912,9 +912,13 @@ export default function TreinosScreen() {
                           <Text style={styles.itemTreinoNome}>{item.exercicio}</Text>
                         </View>
 
-                        <View style={styles.itemTreinoBadges}>
-                          <Text style={styles.itemTreinoBadge}>{item.seriesReps}</Text>
-                          <Text style={styles.itemTreinoBadge}>{item.descanso}</Text>
+                        <View style={styles.itemTreinoInfo}>
+                          <Text style={styles.itemTreinoInfoLinha}>
+                            <Text style={styles.itemTreinoInfoRotulo}>Reps:</Text> {item.seriesReps}
+                          </Text>
+                          <Text style={styles.itemTreinoInfoLinha}>
+                            <Text style={styles.itemTreinoInfoRotulo}>Descanso:</Text> {item.descanso}
+                          </Text>
                         </View>
 
                         <View style={styles.itemTreinoAcoes}>
@@ -1344,19 +1348,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
   },
-  itemTreinoBadges: {
-    flexDirection: 'row',
-    gap: 8,
+  itemTreinoInfo: {
+    gap: 4,
   },
-  itemTreinoBadge: {
-    backgroundColor: '#1E293B',
+  itemTreinoInfoLinha: {
     color: '#DBEAFE',
-    borderRadius: 999,
-    overflow: 'hidden',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     fontSize: 12,
-    fontWeight: '700',
+    lineHeight: 18,
+  },
+  itemTreinoInfoRotulo: {
+    color: '#7DD3FC',
+    fontWeight: '800',
   },
   itemTreinoAcoes: {
     flexDirection: 'row',
