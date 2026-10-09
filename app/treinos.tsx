@@ -1,13 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import { useMemo, useState } from 'react';
-import {
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 type TrainingKey = 'A' | 'B';
 type PlaceKey = 'dojang' | 'academia';
@@ -156,7 +148,7 @@ const PLANOS: TrainingPlan = {
   },
 };
 
-export default function App() {
+export default function TreinosScreen() {
   const [treinoSelecionado, setTreinoSelecionado] = useState<TrainingKey>('A');
   const [localSelecionado, setLocalSelecionado] = useState<PlaceKey>('dojang');
   const [concluidos, setConcluidos] = useState<Record<string, boolean>>({});
@@ -177,12 +169,10 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar style="light" />
       <View style={styles.bgTop} />
-
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.titulo}>Taekwondo Treinos</Text>
-        <Text style={styles.subtitulo}>Planejamento semanal com treino A e treino B</Text>
+        <Text style={styles.titulo}>Treinos</Text>
+        <Text style={styles.subtitulo}>Treino A/B com versao Dojang e Academia</Text>
 
         <View style={styles.grupoBotoes}>
           <Text style={styles.rotulo}>Escolha o treino</Text>
