@@ -330,12 +330,130 @@ const TREINO_A_ACADEMIA: TrainingExercise[] = [
   },
 ];
 
+const TREINO_B_DOJANG: TrainingExercise[] = [
+  {
+    id: 'b-dojang-1',
+    exercicio: 'Deslocamento lateral na base',
+    seriesReps: '4 x 15 seg',
+    descanso: '45 seg',
+    comoFazer: [
+      'Na base de luta, guarda alta.',
+      'Desloque-se rápido para um lado por uns 3 metros e volte, sem cruzar os pés.',
+      'Fique na ponta dos pés o tempo todo.',
+    ],
+    cuidadoErroComum: 'Cruzar os pés ou ficar com as pernas esticadas.',
+    paraQueServe: 'Movimentação rápida na área de luta.',
+    achouDificil: 'Mais devagar, focando em não cruzar os pés.',
+  },
+  {
+    id: 'b-dojang-2',
+    exercicio: 'Salto do patinador',
+    seriesReps: '3 x 8 cada lado',
+    descanso: '1 min',
+    comoFazer: [
+      'Em pé numa perna.',
+      'Salte de lado e aterrisse na outra perna.',
+      'Segure 1 seg equilibrado e salte de volta.',
+    ],
+    cuidadoErroComum: 'Aterrissar com o joelho caindo pra dentro.',
+    paraQueServe: 'Explosão lateral e controle ao aterrissar numa perna.',
+    achouDificil: 'Passo lateral grande em vez de salto.',
+  },
+  {
+    id: 'b-dojang-3',
+    exercicio: 'Flexão de braço',
+    seriesReps: '3 x 8-12',
+    descanso: '1 min',
+    comoFazer: [
+      'Mãos no chão um pouco mais abertas que os ombros.',
+      'Corpo reto da cabeça ao pé.',
+      'Desça o peito até perto do chão, cotovelos a ~45° do corpo.',
+      'Empurre e suba.',
+    ],
+    cuidadoErroComum: 'Quadril caindo ou cotovelos muito abertos (pra fora).',
+    paraQueServe: 'Força de braço e ombro pra guarda e pra empurrar o oponente no clinch.',
+    achouDificil: 'Apoie os joelhos ou faça com as mãos na parede/banco.',
+  },
+  {
+    id: 'b-dojang-4',
+    exercicio: 'Super-homem com Y',
+    seriesReps: '3 x 10',
+    descanso: '45 seg',
+    comoFazer: [
+      'Deitado de barriga pra baixo, braços esticados acima da cabeça em forma de Y.',
+      'Tire braços e peito um pouco do chão, apertando as costas.',
+      'Segure 2 seg e desça.',
+    ],
+    cuidadoErroComum: 'Jogar a cabeça pra trás. Olhe pro chão.',
+    paraQueServe: 'Costas fortes: postura e ombros protegidos na guarda.',
+    achouDificil: 'Suba só os braços.',
+  },
+  {
+    id: 'b-dojang-5',
+    exercicio: 'Prancha lateral',
+    seriesReps: '3 x 20-30 seg cada lado',
+    descanso: '45 seg',
+    comoFazer: [
+      'Deitado de lado, apoie o antebraço (cotovelo embaixo do ombro).',
+      'Suba o quadril até o corpo ficar reto.',
+      'Segure, respirando normal.',
+    ],
+    cuidadoErroComum: 'Quadril caindo pro chão.',
+    paraQueServe: 'Lateral do core: força no chute circular e no giro.',
+    achouDificil: 'Joelhos dobrados e apoiados no chão.',
+  },
+  {
+    id: 'b-dojang-6',
+    exercicio: 'Escalador',
+    seriesReps: '3 x 20 seg',
+    descanso: '40 seg',
+    comoFazer: [
+      'Na posição de flexão (braços esticados).',
+      'Traga um joelho em direção ao peito e volte, alternando rápido, como se corresse.',
+    ],
+    cuidadoErroComum: 'Bumbum muito alto. Mantenha o corpo reto.',
+    paraQueServe: 'Condicionamento e core juntos.',
+    achouDificil: 'Mais devagar, um joelho de cada vez.',
+  },
+  {
+    id: 'b-dojang-7',
+    exercicio: 'Abdominal bicicleta',
+    seriesReps: '3 x 10 cada lado',
+    descanso: '45 seg',
+    comoFazer: [
+      'Deitado de costas, mãos atrás da cabeça (sem puxar o pescoço).',
+      'Leve o cotovelo em direção ao joelho oposto enquanto estica a outra perna.',
+      'Alterne devagar.',
+    ],
+    cuidadoErroComum: 'Puxar a cabeça com as mãos. Fazer correndo.',
+    paraQueServe: 'Rotação do tronco presente nos chutes.',
+    achouDificil: 'Pés no chão, só o giro do tronco.',
+  },
+  {
+    id: 'b-dojang-8',
+    exercicio: 'Rounds de chute (final)',
+    seriesReps: '6 a 8 rounds de 20 seg',
+    descanso: '40 seg entre rounds',
+    comoFazer: [
+      'Na base de luta, em frente a um saco/aparador ou no ar.',
+      '20 seg: bandal tchagui alternando as pernas, o mais rápido possível COM técnica.',
+      '40 seg: descanso andando.',
+      'Repita.',
+    ],
+    cuidadoErroComum: 'Perder a técnica no cansaço. Se o chute ficou feio, diminua o ritmo.',
+    paraQueServe: 'Simula o esforço da luta: aguentar rounds com chute rápido até o fim.',
+    achouDificil: 'Comece com 4 rounds e aumente 1 por semana.',
+  },
+];
+
 const TREINOS: Record<TrainingKey, Partial<Record<PlaceKey, TrainingExercise[]>>> = {
   A: {
     dojang: TREINO_A_DOJANG,
     academia: TREINO_A_ACADEMIA,
   },
-  B: {},
+  B: {
+    dojang: TREINO_B_DOJANG,
+  },
 };
 
 export default function TreinosScreen() {
