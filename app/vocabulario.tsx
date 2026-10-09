@@ -38,6 +38,29 @@ const blocos: BlocoVocabulario[] = [
       { coreano: 'Iol', pt: 'Dez' },
     ],
   },
+  {
+    titulo: 'Ordens de comando',
+    termos: [
+      { coreano: 'Kuryong', pt: 'Comando' },
+      { coreano: 'Tchariot', pt: 'Sentido' },
+      { coreano: 'Son-So', pt: 'Juramento' },
+      { coreano: 'Murub Kuro', pt: 'Ajoelhar-se' },
+      { coreano: 'Irossôt', pt: 'Levantar-se' },
+      { coreano: 'Kalhyo', pt: 'Separar' },
+      { coreano: 'Ki Rab', pt: 'Grito' },
+      { coreano: 'Ke-Shi', pt: 'Contar até 10' },
+      { coreano: 'Retchio', pt: 'Debandar, abrir' },
+      { coreano: 'Shijak', pt: 'Começar' },
+      { coreano: 'Shiô', pt: 'Descansar' },
+      { coreano: 'Bal Bakugui', pt: 'Trocar de Perna' },
+      { coreano: 'Jua-u-Hyang-u', pt: 'Ficar frente à frente' },
+      { coreano: 'Kuman', pt: 'Parar' },
+      { coreano: 'Tirô Tora', pt: 'Meia volta' },
+      { coreano: 'Jumbi', pt: 'Preparar' },
+      { coreano: 'Barô', pt: 'voltar, parar' },
+      { coreano: 'Kesok', pt: 'continuar' },
+    ],
+  },
 ];
 
 export default function VocabularioScreen() {
