@@ -49,6 +49,21 @@ const blocos: BlocoVocabulario[] = [
       { coreano: 'Kesok', pt: 'continuar' },
     ],
   },
+  {
+    titulo: 'Insa (Cumprimento)',
+    termos: [
+      { coreano: 'Kiugné', pt: 'Saudação' },
+      { coreano: 'Kuki e Derraio Kiugné', pt: 'Saudação as Bandeiras' },
+      { coreano: 'Do-Djan Kiunhe', pt: 'Saudação a Sala de Aula' },
+      { coreano: 'Kwan Ja Nim Kiugné', pt: 'Saudação ao Grão Mestre' },
+      { coreano: 'Sa Bo Nim Kiugné', pt: 'Saudação ao Mestre' },
+      { coreano: 'Kio Sa Nim Kiugné', pt: 'Saudação ao Instrutor' },
+      { coreano: 'Jo Kio Nim Kiugné', pt: 'Saudação ao Assistente' },
+      { coreano: 'Anhión Rasseio', pt: 'Tudo bem' },
+      { coreano: 'Gansa Ram Nida', pt: 'Obrigado' },
+      { coreano: 'Nê ou Ié', pt: 'Sim' },
+    ],
+  },
 ];
 
 export default function VocabularioScreen() {
