@@ -6,8 +6,8 @@ type TabName = 'informacoes' | 'treinos' | 'progressao' | 'ponsea' | 'vocabulari
 const icones: Record<TabName, { active: string; idle: string }> = {
   informacoes: { active: 'ℹ️', idle: 'ℹ' },
   treinos: { active: '🥋', idle: '🏋' },
-  progressao: { active: '📈', idle: '↗' },
-  ponsea: { active: '🧍', idle: '🧍‍♂️' },
+  progressao: { active: '📈', idle: '📊' },
+  ponsea: { active: '🥋', idle: '👘' },
   vocabulario: { active: '📘', idle: '📖' },
 };
 
@@ -61,11 +61,11 @@ export default function RootLayout() {
         };
       }}
     >
-      <Tabs.Screen name="informacoes" options={{ title: 'Informacoes' }} />
+      <Tabs.Screen name="informacoes" options={{ title: 'Informações' }} />
       <Tabs.Screen name="treinos" options={{ title: 'Treinos' }} />
-      <Tabs.Screen name="progressao" options={{ title: 'Progressao' }} />
+      <Tabs.Screen name="progressao" options={{ title: 'Progressão' }} />
       <Tabs.Screen name="ponsea" options={{ title: 'Ponsea' }} />
-      <Tabs.Screen name="vocabulario" options={{ title: 'Vocabulario' }} />
+      <Tabs.Screen name="vocabulario" options={{ title: 'Vocabulário' }} />
     </Tabs>
   );
 }
