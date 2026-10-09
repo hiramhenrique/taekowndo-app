@@ -5,9 +5,9 @@ type TabName = 'informacoes' | 'treinos' | 'progressao' | 'ponsea' | 'vocabulari
 
 const icones: Record<TabName, { active: string; idle: string }> = {
   informacoes: { active: 'ℹ️', idle: 'ℹ' },
-  treinos: { active: '🥋', idle: '🏋' },
+  treinos: { active: '🏋', idle: '🏋' },
   progressao: { active: '📈', idle: '📊' },
-  ponsea: { active: '🥋', idle: '👘' },
+  ponsea: { active: '🥋', idle: '🥋' },
   vocabulario: { active: '📘', idle: '📖' },
 };
 
