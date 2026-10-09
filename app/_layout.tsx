@@ -74,7 +74,6 @@ export default function RootLayout() {
       <Tabs.Screen name="progressao" options={{ title: 'Progressão' }} />
       <Tabs.Screen name="ponsea" options={{ title: 'Ponsea' }} />
       <Tabs.Screen name="vocabulario" options={{ title: 'Vocabulário' }} />
-      <Tabs.Screen name="index" options={{ href: null, tabBarButton: () => null }} />
     </Tabs>
   );
 }
