@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 type TrainingKey = 'A' | 'B';
@@ -10,6 +10,17 @@ type WarmupItem = {
   quanto: string;
   comoFazer: string;
   atencao: string;
+};
+
+type TrainingExercise = {
+  id: string;
+  exercicio: string;
+  seriesReps: string;
+  descanso: string;
+  comoFazer: string[];
+  cuidadoErroComum: string;
+  paraQueServe: string;
+  achouDificil: string;
 };
 
 const AQUECIMENTO: WarmupItem[] = [
@@ -71,6 +82,139 @@ const AQUECIMENTO: WarmupItem[] = [
   },
 ];
 
+const TREINO_A_DOJANG: TrainingExercise[] = [
+  {
+    id: 'a-dojang-1',
+    exercicio: 'Salto vertical',
+    seriesReps: '3 x 5',
+    descanso: '1min30',
+    comoFazer: [
+      'Pés na largura do quadril.',
+      'Agache rápido até 1/4 da altura, jogando os braços pra trás.',
+      'Salte o mais alto que puder, braços pra cima.',
+      'Aterrisse macio e PARE 2 seg antes do próximo salto.',
+    ],
+    cuidadoErroComum:
+      'Aterrissar com o joelho entortando pra dentro. Cada salto é no máximo de força, por isso são poucas reps.',
+    paraQueServe:
+      'Força explosiva das pernas: chute mais rápido e saída rápida pra atacar ou esquivar.',
+    achouDificil: 'Salto menor, sem jogar os braços.',
+  },
+  {
+    id: 'a-dojang-2',
+    exercicio: 'Agachamento livre',
+    seriesReps: '3 x 15',
+    descanso: '1 min',
+    comoFazer: [
+      'Pés na largura dos ombros, pontas levemente pra fora.',
+      'Braços à frente, empurre o quadril pra trás e desça.',
+      'Desça até a coxa ficar paralela ao chão (ou o máximo que conseguir com as costas retas).',
+      'Empurre o chão e suba.',
+    ],
+    cuidadoErroComum: 'Tirar o calcanhar do chão ou arredondar as costas.',
+    paraQueServe: 'Base forte e estável; ajuda a manter a base de luta sem cansar.',
+    achouDificil: 'Agache até sentar num banco/cadeira e levante.',
+  },
+  {
+    id: 'a-dojang-3',
+    exercicio: 'Afundo alternado (passada)',
+    seriesReps: '3 x 10 cada perna',
+    descanso: '1 min',
+    comoFazer: [
+      'Em pé, dê um passo grande à frente.',
+      'Desça até os dois joelhos ficarem dobrados em 90° (joelho de trás quase no chão).',
+      'Empurre com a perna da frente e volte.',
+      'Troque a perna.',
+    ],
+    cuidadoErroComum: 'Joelho da frente caindo pra dentro. Tronco caindo pra frente.',
+    paraQueServe:
+      'Força de uma perna só: no taekwondo você chuta e se apoia numa perna.',
+    achouDificil: 'Faça parado (sem voltar), segurando uma parede.',
+  },
+  {
+    id: 'a-dojang-4',
+    exercicio: 'Ponte de glúteo',
+    seriesReps: '3 x 12',
+    descanso: '1 min',
+    comoFazer: [
+      'Deitado de costas, joelhos dobrados, pés no chão.',
+      'Aperte o bumbum e suba o quadril até formar uma linha reta joelho-quadril-ombro.',
+      'Segure 2 seg lá em cima.',
+      'Desça devagar.',
+    ],
+    cuidadoErroComum: 'Subir arqueando a lombar em vez de usar o glúteo.',
+    paraQueServe: 'Glúteo forte = chute mais potente e proteção da lombar.',
+    achouDificil: 'Diminua a altura da subida. Mais difícil: com uma perna só.',
+  },
+  {
+    id: 'a-dojang-5',
+    exercicio: 'Equilíbrio na câmara do chute',
+    seriesReps: '3 x 20 seg cada perna',
+    descanso: '45 seg',
+    comoFazer: [
+      'Na base de luta, suba o joelho de trás na posição de câmara (como se fosse chutar).',
+      'Segure parado nessa posição, braços em guarda.',
+      'Mantenha o tronco firme.',
+    ],
+    cuidadoErroComum:
+      'Inclinar muito o tronco ou deixar a perna de apoio totalmente travada (deixe o joelho levemente dobrado).',
+    paraQueServe: 'Controle e equilíbrio no chute; perna de apoio mais estável.',
+    achouDificil: 'Toque um dedo na parede. Mais difícil: olhos fechados.',
+  },
+  {
+    id: 'a-dojang-6',
+    exercicio: 'Panturrilha em uma perna',
+    seriesReps: '3 x 15 cada perna',
+    descanso: '45 seg',
+    comoFazer: [
+      'Em pé numa perna, segure numa parede.',
+      'Suba na ponta do pé o mais alto que puder.',
+      'Desça devagar (2 seg).',
+    ],
+    cuidadoErroComum: 'Fazer rápido e curto. O movimento tem que ser completo.',
+    paraQueServe: 'Mobilidade na ponta dos pés, giro no chute e proteção do tornozelo.',
+    achouDificil: 'Faça com as duas pernas juntas.',
+  },
+  {
+    id: 'a-dojang-7',
+    exercicio: 'Prancha frontal',
+    seriesReps: '3 x 30 seg',
+    descanso: '45 seg',
+    comoFazer: [
+      'Apoie antebraços e ponta dos pés no chão.',
+      'Corpo reto como uma tábua, da cabeça ao calcanhar.',
+      'Aperte o abdômen e o bumbum.',
+      'Respire normalmente.',
+    ],
+    cuidadoErroComum: 'Quadril caindo (dói a lombar) ou bumbum muito alto.',
+    paraQueServe: 'Core firme: transfere a força do quadril pro chute e aguenta impacto.',
+    achouDificil: 'Apoie os joelhos no chão.',
+  },
+  {
+    id: 'a-dojang-8',
+    exercicio: 'Inseto morto',
+    seriesReps: '3 x 8 cada lado',
+    descanso: '45 seg',
+    comoFazer: [
+      'Deitado de costas, braços esticados pro teto, joelhos dobrados em 90° no ar.',
+      'Cole a lombar no chão.',
+      'Estique um braço pra trás e a perna do lado oposto pra frente, devagar.',
+      'Volte e troque o lado.',
+    ],
+    cuidadoErroComum:
+      'Lombar sair do chão. Se isso acontecer, diminua a distância do movimento.',
+    paraQueServe: 'Controle do abdômen enquanto braços e pernas se mexem, igual na luta.',
+    achouDificil: 'Mexa só as pernas, braços parados.',
+  },
+];
+
+const TREINOS: Record<TrainingKey, Partial<Record<PlaceKey, TrainingExercise[]>>> = {
+  A: {
+    dojang: TREINO_A_DOJANG,
+  },
+  B: {},
+};
+
 export default function TreinosScreen() {
   const [treinoSelecionado, setTreinoSelecionado] = useState<TrainingKey>('A');
   const [localSelecionado, setLocalSelecionado] = useState<PlaceKey>('dojang');
@@ -78,10 +222,22 @@ export default function TreinosScreen() {
   const [aquecimentoFinalizado, setAquecimentoFinalizado] = useState(false);
   const [aquecimentoExpandido, setAquecimentoExpandido] = useState(true);
   const [infoExercicioId, setInfoExercicioId] = useState<number | null>(null);
+  const [treinoConcluidos, setTreinoConcluidos] = useState<Record<string, boolean>>({});
+  const [treinoInfoId, setTreinoInfoId] = useState<string | null>(null);
+  const [treinoFinalizadoPorChave, setTreinoFinalizadoPorChave] = useState<Record<string, boolean>>({});
 
   const totalAquecimentoConcluidos = AQUECIMENTO.filter((item) => aquecimentoConcluidos[item.id]).length;
   const aquecimentoPodeFinalizar = totalAquecimentoConcluidos === AQUECIMENTO.length;
   const exercicioSelecionado = AQUECIMENTO.find((item) => item.id === infoExercicioId) ?? null;
+
+  const chaveTreinoAtual = `${treinoSelecionado}-${localSelecionado}`;
+  const treinoAtual = TREINOS[treinoSelecionado][localSelecionado] ?? null;
+  const treinoSelecionadoInfo = treinoAtual?.find((item) => item.id === treinoInfoId) ?? null;
+  const totalTreinoConcluido = treinoAtual
+    ? treinoAtual.filter((item) => treinoConcluidos[item.id]).length
+    : 0;
+  const treinoPodeFinalizar = Boolean(treinoAtual && totalTreinoConcluido === treinoAtual.length);
+  const treinoJaFinalizado = Boolean(treinoFinalizadoPorChave[chaveTreinoAtual]);
 
   const alternarConcluidoAquecimento = (id: number) => {
     if (aquecimentoFinalizado) {
@@ -99,6 +255,26 @@ export default function TreinosScreen() {
     }
     setAquecimentoFinalizado(true);
     setAquecimentoExpandido(false);
+  };
+
+  const alternarConcluidoTreino = (id: string) => {
+    if (treinoJaFinalizado) {
+      return;
+    }
+    setTreinoConcluidos((estadoAnterior) => ({
+      ...estadoAnterior,
+      [id]: !estadoAnterior[id],
+    }));
+  };
+
+  const finalizarTreinoSelecionado = () => {
+    if (!treinoPodeFinalizar) {
+      return;
+    }
+    setTreinoFinalizadoPorChave((estadoAnterior) => ({
+      ...estadoAnterior,
+      [chaveTreinoAtual]: true,
+    }));
   };
 
   return (
@@ -124,9 +300,6 @@ export default function TreinosScreen() {
             </Pressable>
           </View>
 
-          <Text style={styles.aquecimentoAviso}>
-            Importante: este bloco deve ser feito antes de qualquer treino.
-          </Text>
           <Text style={styles.progressoAquecimento}>
             {totalAquecimentoConcluidos}/{AQUECIMENTO.length} exercícios concluídos
           </Text>
@@ -252,6 +425,73 @@ export default function TreinosScreen() {
                   Treino {treinoSelecionado} - {localSelecionado === 'dojang' ? 'Dojang' : 'Academia'}
                 </Text>
               </View>
+
+              {treinoAtual && (
+                <View style={styles.cardTreinoDetalhado}>
+                  <Text style={styles.cardTreinoDetalhadoTitulo}>
+                    Treino {treinoSelecionado} - {localSelecionado === 'dojang' ? 'Dojang' : 'Academia'}
+                  </Text>
+                  <Text style={styles.cardTreinoDetalhadoSubtitulo}>
+                    Faça os exercícios na ordem da lista e conclua cada bloco.
+                  </Text>
+                  <Text style={styles.cardTreinoDetalhadoProgresso}>
+                    {totalTreinoConcluido}/{treinoAtual.length} exercícios concluídos
+                  </Text>
+
+                  {treinoAtual.map((item, indice) => {
+                    const feito = Boolean(treinoConcluidos[item.id]);
+                    return (
+                      <View key={item.id} style={styles.itemTreino}>
+                        <View style={styles.itemTreinoTopo}>
+                          <Text style={styles.itemTreinoNumero}>{indice + 1}.</Text>
+                          <Text style={styles.itemTreinoNome}>{item.exercicio}</Text>
+                        </View>
+
+                        <View style={styles.itemTreinoBadges}>
+                          <Text style={styles.itemTreinoBadge}>{item.seriesReps}</Text>
+                          <Text style={styles.itemTreinoBadge}>{item.descanso}</Text>
+                        </View>
+
+                        <View style={styles.itemTreinoAcoes}>
+                          <Pressable style={styles.botaoInfo} onPress={() => setTreinoInfoId(item.id)}>
+                            <Text style={styles.botaoInfoTexto}>i</Text>
+                          </Pressable>
+
+                          <Pressable
+                            style={[styles.botaoConcluir, feito && styles.botaoConcluirAtivo]}
+                            onPress={() => alternarConcluidoTreino(item.id)}
+                          >
+                            <Text style={[styles.botaoConcluirTexto, feito && styles.botaoConcluirTextoAtivo]}>
+                              {feito ? 'Concluído' : 'Concluir'}
+                            </Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    );
+                  })}
+
+                  {treinoPodeFinalizar && !treinoJaFinalizado && (
+                    <Pressable style={styles.botaoFinalizarAquecimento} onPress={finalizarTreinoSelecionado}>
+                      <Text style={styles.botaoFinalizarAquecimentoTexto}>Concluir treino selecionado</Text>
+                    </Pressable>
+                  )}
+
+                  {treinoJaFinalizado && (
+                    <Text style={styles.treinoFinalizadoTexto}>
+                      Treino selecionado concluído com sucesso.
+                    </Text>
+                  )}
+                </View>
+              )}
+
+              {!treinoAtual && (
+                <View style={styles.cardTreinoIndisponivel}>
+                  <Text style={styles.cardTreinoIndisponivelTitulo}>Treino em preparação</Text>
+                  <Text style={styles.cardTreinoIndisponivelTexto}>
+                    Esta combinação ainda não foi cadastrada. Adicione os próximos treinos em sequência.
+                  </Text>
+                </View>
+              )}
             </>
           )}
         </View>
@@ -270,6 +510,37 @@ export default function TreinosScreen() {
             <Text style={styles.modalTexto}>{exercicioSelecionado?.atencao}</Text>
 
             <Pressable style={styles.botaoFecharModal} onPress={() => setInfoExercicioId(null)}>
+              <Text style={styles.botaoFecharModalTexto}>Fechar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal visible={treinoInfoId !== null} transparent animationType="fade" onRequestClose={() => setTreinoInfoId(null)}>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitulo}>{treinoSelecionadoInfo?.exercicio}</Text>
+            <Text style={styles.modalSubtitulo}>
+              {treinoSelecionadoInfo?.seriesReps} | Descanso: {treinoSelecionadoInfo?.descanso}
+            </Text>
+
+            <Text style={styles.modalRotulo}>Como fazer (passo a passo)</Text>
+            {treinoSelecionadoInfo?.comoFazer.map((passo, index) => (
+              <Text key={`${treinoSelecionadoInfo.id}-passo-${index}`} style={styles.modalTexto}>
+                {index + 1}) {passo}
+              </Text>
+            ))}
+
+            <Text style={styles.modalRotulo}>Cuidado / erro comum</Text>
+            <Text style={styles.modalTexto}>{treinoSelecionadoInfo?.cuidadoErroComum}</Text>
+
+            <Text style={styles.modalRotulo}>Pra que serve no taekwondo</Text>
+            <Text style={styles.modalTexto}>{treinoSelecionadoInfo?.paraQueServe}</Text>
+
+            <Text style={styles.modalRotulo}>Achou difícil? Faça assim</Text>
+            <Text style={styles.modalTexto}>{treinoSelecionadoInfo?.achouDificil}</Text>
+
+            <Pressable style={styles.botaoFecharModal} onPress={() => setTreinoInfoId(null)}>
               <Text style={styles.botaoFecharModalTexto}>Fechar</Text>
             </Pressable>
           </View>
@@ -339,12 +610,6 @@ const styles = StyleSheet.create({
     color: '#BFDBFE',
     fontSize: 13,
     fontWeight: '700',
-  },
-  aquecimentoAviso: {
-    color: '#FDE68A',
-    fontSize: 13,
-    fontWeight: '700',
-    marginBottom: 2,
   },
   progressoAquecimento: {
     color: '#93C5FD',
@@ -493,6 +758,93 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '800',
     marginTop: 6,
+  },
+  cardTreinoDetalhado: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#1E293B',
+    backgroundColor: '#0B1220',
+    padding: 12,
+    gap: 8,
+  },
+  cardTreinoDetalhadoTitulo: {
+    color: '#F8FAFC',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  cardTreinoDetalhadoSubtitulo: {
+    color: '#BFDBFE',
+    fontSize: 12,
+  },
+  cardTreinoDetalhadoProgresso: {
+    color: '#38BDF8',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  itemTreino: {
+    borderTopWidth: 1,
+    borderTopColor: '#1E293B',
+    paddingTop: 8,
+    gap: 6,
+  },
+  itemTreinoTopo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  itemTreinoNumero: {
+    color: '#93C5FD',
+    fontWeight: '800',
+    fontSize: 13,
+  },
+  itemTreinoNome: {
+    flex: 1,
+    color: '#F8FAFC',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  itemTreinoBadges: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  itemTreinoBadge: {
+    backgroundColor: '#1E293B',
+    color: '#DBEAFE',
+    borderRadius: 999,
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  itemTreinoAcoes: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 8,
+  },
+  treinoFinalizadoTexto: {
+    marginTop: 6,
+    color: '#BBF7D0',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  cardTreinoIndisponivel: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#334155',
+    backgroundColor: '#0F172A',
+    padding: 12,
+    gap: 6,
+  },
+  cardTreinoIndisponivelTitulo: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  cardTreinoIndisponivelTexto: {
+    color: '#94A3B8',
+    fontSize: 13,
+    lineHeight: 19,
   },
   modalBackdrop: {
     flex: 1,
