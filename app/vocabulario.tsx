@@ -13,17 +13,6 @@ type BlocoVocabulario = {
 
 const blocos: BlocoVocabulario[] = [
   {
-    titulo: 'Vocabulário básico',
-    termos: [
-      { coreano: 'Charyeot', pt: 'Atenção' },
-      { coreano: 'Kyong-rye', pt: 'Cumprimentar' },
-      { coreano: 'Joon-bi', pt: 'Preparar' },
-      { coreano: 'Sijak', pt: 'Começar' },
-      { coreano: 'Baro', pt: 'Voltar' },
-      { coreano: 'Keuman', pt: 'Parar' },
-    ],
-  },
-  {
     titulo: 'Contagem',
     termos: [
       { coreano: 'Hanná', pt: 'Um' },
@@ -48,7 +37,6 @@ const blocos: BlocoVocabulario[] = [
       { coreano: 'Irossôt', pt: 'Levantar-se' },
       { coreano: 'Kalhyo', pt: 'Separar' },
       { coreano: 'Ki Rab', pt: 'Grito' },
-      { coreano: 'Ke-Shi', pt: 'Contar até 10' },
       { coreano: 'Retchio', pt: 'Debandar, abrir' },
       { coreano: 'Shijak', pt: 'Começar' },
       { coreano: 'Shiô', pt: 'Descansar' },
