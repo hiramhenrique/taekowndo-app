@@ -13,6 +13,64 @@ type TrainingBlock = {
 
 type TrainingPlan = Record<TrainingKey, Record<PlaceKey, TrainingBlock[]>>;
 
+type WarmupItem = {
+  id: number;
+  exercicio: string;
+  quanto: string;
+  comoFazer: string;
+};
+
+const AQUECIMENTO: WarmupItem[] = [
+  {
+    id: 1,
+    exercicio: 'Polichinelo',
+    quanto: '1 minuto',
+    comoFazer: 'Abra e feche pernas e bracos no mesmo ritmo. Aterrise leve na ponta dos pes.',
+  },
+  {
+    id: 2,
+    exercicio: 'Corrida no lugar com joelho alto',
+    quanto: '2 x 30 seg',
+    comoFazer: 'Corra parado elevando os joelhos ate a altura do quadril, com tronco reto.',
+  },
+  {
+    id: 3,
+    exercicio: 'Abrir e fechar o portao',
+    quanto: '8 cada perna',
+    comoFazer: 'Suba o joelho a frente, abra para o lado e depois feche no caminho contrario.',
+  },
+  {
+    id: 4,
+    exercicio: 'Agachamento lento',
+    quanto: '10 reps',
+    comoFazer: 'Desca controlado em 3 segundos e suba mantendo joelhos alinhados aos pes.',
+  },
+  {
+    id: 5,
+    exercicio: 'Afundo com giro de tronco',
+    quanto: '6 cada lado',
+    comoFazer: 'Faca um passo a frente, desca e gire o tronco para o lado da perna da frente.',
+  },
+  {
+    id: 6,
+    exercicio: 'Balanco de perna (frente e lado)',
+    quanto: '10 cada direcao',
+    comoFazer: 'Apoie na parede e balance a perna para frente/tras e depois para o lado.',
+  },
+  {
+    id: 7,
+    exercicio: 'Saltitos na base de luta',
+    quanto: '30 seg',
+    comoFazer: 'Fique na base e quique leve na ponta dos pes com joelhos levemente dobrados.',
+  },
+  {
+    id: 8,
+    exercicio: 'Chutes leves',
+    quanto: '10 cada perna',
+    comoFazer: 'Aplique ap tchagui e bandal tchagui com 50% de forca e altura media.',
+  },
+];
+
 const PLANOS: TrainingPlan = {
   A: {
     dojang: [
@@ -174,6 +232,27 @@ export default function TreinosScreen() {
         <Text style={styles.titulo}>Treinos</Text>
         <Text style={styles.subtitulo}>Treino A/B com versao Dojang e Academia</Text>
 
+        <View style={styles.cardAquecimento}>
+          <Text style={styles.aquecimentoTitulo}>Aquecimento</Text>
+          <Text style={styles.aquecimentoSubtitulo}>
+            Faca antes de todos os treinos (Treino A e Treino B)
+          </Text>
+          <Text style={styles.aquecimentoAviso}>
+            Importante: este bloco deve ser feito antes de qualquer treino.
+          </Text>
+
+          {AQUECIMENTO.map((item) => (
+            <View key={item.id} style={styles.aquecimentoItem}>
+              <View style={styles.aquecimentoTopo}>
+                <Text style={styles.aquecimentoNumero}>{item.id}.</Text>
+                <Text style={styles.aquecimentoExercicio}>{item.exercicio}</Text>
+                <Text style={styles.aquecimentoQuanto}>{item.quanto}</Text>
+              </View>
+              <Text style={styles.aquecimentoComo}>{item.comoFazer}</Text>
+            </View>
+          ))}
+        </View>
+
         <View style={styles.grupoBotoes}>
           <Text style={styles.rotulo}>Escolha o treino</Text>
           <View style={styles.linhaBotoes}>
@@ -289,6 +368,63 @@ const styles = StyleSheet.create({
     color: '#BFDBFE',
     fontSize: 14,
     marginTop: 4,
+  },
+  cardAquecimento: {
+    marginTop: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#1D4ED8',
+    backgroundColor: '#0A1A33',
+    padding: 14,
+    gap: 8,
+  },
+  aquecimentoTitulo: {
+    color: '#E0F2FE',
+    fontSize: 20,
+    fontWeight: '800',
+  },
+  aquecimentoSubtitulo: {
+    color: '#BFDBFE',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  aquecimentoAviso: {
+    color: '#FDE68A',
+    fontSize: 13,
+    fontWeight: '700',
+    marginBottom: 2,
+  },
+  aquecimentoItem: {
+    borderTopWidth: 1,
+    borderTopColor: '#1E3A8A',
+    paddingTop: 8,
+    gap: 4,
+  },
+  aquecimentoTopo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  aquecimentoNumero: {
+    color: '#93C5FD',
+    fontWeight: '800',
+    fontSize: 13,
+  },
+  aquecimentoExercicio: {
+    flex: 1,
+    color: '#F8FAFC',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  aquecimentoQuanto: {
+    color: '#38BDF8',
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  aquecimentoComo: {
+    color: '#CBD5E1',
+    fontSize: 13,
+    lineHeight: 18,
   },
   grupoBotoes: {
     marginTop: 8,
