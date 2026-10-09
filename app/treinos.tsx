@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { addTrainingRecord, formatDuration } from './state/trainingRecordsStore';
+import { addTrainingRecord, formatDuration } from '../state/trainingRecordsStore';
 
 type TrainingKey = 'A' | 'B';
 type PlaceKey = 'dojang' | 'academia';

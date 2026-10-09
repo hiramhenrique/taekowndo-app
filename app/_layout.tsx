@@ -13,17 +13,12 @@ const icones: Record<TabName, { active: string; idle: string }> = {
 
 const iconePadrao = { active: '📱', idle: '📱' };
 
-function isTabName(routeName: string): routeName is TabName {
-  return routeName in icones;
-}
-
 export default function RootLayout() {
   return (
     <Tabs
       screenOptions={({ route }) => {
-        const nomeRota = route.name;
-        const rotaValida = isTabName(nomeRota);
-        const icon = rotaValida ? icones[nomeRota] : iconePadrao;
+        const nomeRota = route.name as TabName;
+        const icon = icones[nomeRota] ?? iconePadrao;
 
         return {
           headerStyle: { backgroundColor: '#081022' },
@@ -42,7 +37,6 @@ export default function RootLayout() {
             fontSize: 12,
             fontWeight: '700',
           },
-          tabBarButton: rotaValida ? undefined : () => null,
           tabBarIcon: ({ focused, color, size }) => (
             <View
               style={{

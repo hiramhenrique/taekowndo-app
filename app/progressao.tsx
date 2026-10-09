@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { getTrainingRecordsSnapshot, subscribeTrainingRecords } from './state/trainingRecordsStore';
+import { getTrainingRecordsSnapshot, subscribeTrainingRecords } from '../state/trainingRecordsStore';
 
 const PROGRESSAO_SEMANAL = [
   {
