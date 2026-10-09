@@ -11,12 +11,14 @@ const icones: Record<TabName, { active: string; idle: string }> = {
   vocabulario: { active: '📘', idle: '📖' },
 };
 
+const iconePadrao = { active: '📱', idle: '📱' };
+
 export default function RootLayout() {
   return (
     <Tabs
       screenOptions={({ route }) => {
         const nomeRota = route.name as TabName;
-        const icon = icones[nomeRota];
+        const icon = icones[nomeRota] ?? iconePadrao;
 
         return {
           headerStyle: { backgroundColor: '#081022' },
@@ -66,6 +68,7 @@ export default function RootLayout() {
       <Tabs.Screen name="progressao" options={{ title: 'Progressão' }} />
       <Tabs.Screen name="ponsea" options={{ title: 'Ponsea' }} />
       <Tabs.Screen name="vocabulario" options={{ title: 'Vocabulário' }} />
+      <Tabs.Screen name="index" options={{ href: null }} />
     </Tabs>
   );
 }
