@@ -165,8 +165,14 @@ export default function InformacoesScreen() {
 
         <View style={styles.card}>
           <Pressable style={styles.linksHeader} onPress={() => setLinksExpandido((estado) => !estado)}>
-            <Text style={styles.cardTitulo}>Se tiver alguma dúvida durante o treino, é só ver o link correspondente ao exercício.</Text>
-            <Text style={styles.linksSeta}>{linksExpandido ? '▲' : '▼'}</Text>
+            <View style={styles.linksHeaderTextos}>
+              <Text style={styles.cardTitulo}>Se tiver alguma dúvida durante o treino, é só ver o link correspondente ao exercício.</Text>
+              <Text style={styles.linksAjuda}>Toque no botão abaixo para {linksExpandido ? 'ocultar' : 'ver'} os links dos exercícios.</Text>
+            </View>
+
+            <View style={styles.linksBotaoExpandir}>
+              <Text style={styles.linksBotaoExpandirTexto}>{linksExpandido ? 'Ocultar links ▲' : 'Ver links ▼'}</Text>
+            </View>
           </Pressable>
 
           {linksExpandido && (
@@ -294,13 +300,27 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   linksHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     gap: 10,
   },
-  linksSeta: {
+  linksHeaderTextos: {
+    gap: 6,
+  },
+  linksAjuda: {
     color: '#93C5FD',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  linksBotaoExpandir: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#1E3A8A',
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#60A5FA',
+  },
+  linksBotaoExpandirTexto: {
+    color: '#DBEAFE',
     fontSize: 12,
     fontWeight: '800',
   },
