@@ -75,21 +75,25 @@ export default function ProgressaoScreen() {
           <Text style={styles.cardTitulo}>Progressão - o que muda a cada semana</Text>
           <Text style={styles.cardHint}>Use sempre as séries e repetições das abas de treino, ajustando pelo que está nesta tabela.</Text>
 
-          <View style={styles.progressaoHeader}>
-            <Text style={[styles.colunaHeader, styles.colSemana]}>Semana</Text>
-            <Text style={[styles.colunaHeader, styles.colFase]}>Fase</Text>
-            <Text style={[styles.colunaHeader, styles.colSeries]}>Séries</Text>
-            <Text style={[styles.colunaHeader, styles.colEsforco]}>Esforço</Text>
-            <Text style={[styles.colunaHeader, styles.colOQueFazer]}>O que fazer</Text>
-          </View>
-
           {PROGRESSAO_SEMANAL.map((item) => (
-            <View key={item.semana} style={styles.progressaoLinha}>
-              <Text style={[styles.colunaValor, styles.colSemana]}>{item.semana}</Text>
-              <Text style={[styles.colunaValor, styles.colFase]}>{item.fase}</Text>
-              <Text style={[styles.colunaValor, styles.colSeries]}>{item.series}</Text>
-              <Text style={[styles.colunaValor, styles.colEsforco]}>{item.esforco}</Text>
-              <Text style={[styles.colunaValor, styles.colOQueFazer]}>{item.oQueFazer}</Text>
+            <View key={item.semana} style={styles.progressaoCardItem}>
+              <View style={styles.progressaoCardHeader}>
+                <Text style={styles.progressaoSemana}>Semana {item.semana}</Text>
+                <Text style={styles.progressaoFase}>{item.fase}</Text>
+              </View>
+
+              <Text style={styles.progressaoLinhaTexto}>
+                <Text style={styles.progressaoRotulo}>Séries: </Text>
+                {item.series}
+              </Text>
+              <Text style={styles.progressaoLinhaTexto}>
+                <Text style={styles.progressaoRotulo}>Esforço: </Text>
+                {item.esforco}
+              </Text>
+              <Text style={styles.progressaoLinhaTexto}>
+                <Text style={styles.progressaoRotulo}>O que fazer: </Text>
+                {item.oQueFazer}
+              </Text>
             </View>
           ))}
 
@@ -131,93 +135,92 @@ const styles = StyleSheet.create({
   },
   cardTitulo: {
     color: '#E2E8F0',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
   },
   cardHint: {
     color: '#94A3B8',
-    fontSize: 12,
-    marginBottom: 2,
+    fontSize: 13,
+    marginBottom: 4,
   },
   tabelaHeader: {
     flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: '#1E293B',
-    paddingTop: 8,
-    marginTop: 2,
+    paddingTop: 10,
+    marginTop: 4,
   },
   tabelaLinha: {
     flexDirection: 'row',
     borderTopWidth: 1,
     borderTopColor: '#1E293B',
-    paddingTop: 8,
-    paddingBottom: 2,
+    paddingTop: 10,
+    paddingBottom: 6,
   },
   semRegistros: {
     color: '#94A3B8',
-    fontSize: 13,
+    fontSize: 14,
     paddingTop: 8,
   },
   colunaHeader: {
     color: '#93C5FD',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
     textTransform: 'uppercase',
   },
   colunaValor: {
     color: '#CBD5E1',
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 14,
+    lineHeight: 21,
   },
   colVariacao: {
-    flex: 1.6,
-    paddingRight: 8,
+    flex: 1.8,
+    paddingRight: 10,
   },
   colTempo: {
-    flex: 0.8,
-    paddingRight: 8,
+    flex: 1,
+    paddingRight: 10,
   },
   colData: {
     flex: 1,
   },
-  progressaoHeader: {
-    flexDirection: 'row',
+  progressaoCardItem: {
     borderTopWidth: 1,
     borderTopColor: '#1E293B',
-    paddingTop: 8,
-    marginTop: 2,
+    paddingTop: 10,
+    paddingBottom: 10,
+    gap: 6,
   },
-  progressaoLinha: {
+  progressaoCardHeader: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    borderTopColor: '#1E293B',
-    paddingTop: 8,
-    paddingBottom: 2,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
   },
-  colSemana: {
-    flex: 0.85,
-    paddingRight: 6,
+  progressaoSemana: {
+    color: '#E2E8F0',
+    fontSize: 14,
+    fontWeight: '800',
   },
-  colFase: {
-    flex: 1.2,
-    paddingRight: 6,
+  progressaoFase: {
+    color: '#7DD3FC',
+    fontSize: 13,
+    fontWeight: '700',
   },
-  colSeries: {
-    flex: 2,
-    paddingRight: 6,
+  progressaoLinhaTexto: {
+    color: '#CBD5E1',
+    fontSize: 14,
+    lineHeight: 21,
   },
-  colEsforco: {
-    flex: 1.2,
-    paddingRight: 6,
-  },
-  colOQueFazer: {
-    flex: 3,
+  progressaoRotulo: {
+    color: '#93C5FD',
+    fontWeight: '800',
   },
   regraOuro: {
     marginTop: 10,
     color: '#FCA5A5',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
-    lineHeight: 18,
+    lineHeight: 20,
   },
 });
